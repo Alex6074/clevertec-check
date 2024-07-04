@@ -9,11 +9,14 @@
 1. Клонируйте репозиторий.
 2. Убедитесь, что у вас установлен Java 21.
 3. Перейдите в корневую директорию проекта.
-4. Запустите команду:
+4. Запустите последовательно команды для создания папки, компиляции Java файлов и запуска программы:
 
 ```sh
-java -cp src ./src/main/java/ru/clevertec/check/CheckRunner.java id-quantity discountCard=xxxx balanceDebitCard=xxxx
+mkdir build\classes
+javac -d build\classes -cp src src\main\java\ru\clevertec\check\*.java
+java -cp build\classes ru.clevertec.check.CheckRunner id-quantity discountCard=xxxx balanceDebitCard=xxxx
 ```
+
 Где:
 - id - идентификатор товара (см. products.csv)
 - quantity - количество товара
@@ -22,5 +25,5 @@ java -cp src ./src/main/java/ru/clevertec/check/CheckRunner.java id-quantity dis
 
 Например
 ```sh
-java -cp src ./src/main/java/ru/clevertec/check/CheckRunner.java 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100
+java -cp build\classes ru.clevertec.check.CheckRunner 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100
 ```

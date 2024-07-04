@@ -29,8 +29,8 @@ public class CheckValidator {
             writer.write("ERROR\n");
             System.out.println("ERROR");
             for (ValidationError error : errorList) {
-                writer.write(error.getDescription() + "\n");
-                System.out.println("CODE: " + error.getErrorCode() + ", DESCRIPTION: " + error.getDescription());
+                writer.write(error.getErrorCode() + "\n");
+                System.out.println(error.getErrorCode() + ": " + error.getDescription());
             }
         } catch (IOException e) {
             e.printStackTrace();

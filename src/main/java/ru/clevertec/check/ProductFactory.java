@@ -6,9 +6,9 @@ import java.util.Map;
 public class ProductFactory {
     private Map<Integer, Product> products;
 
-    public ProductFactory() {
+    public ProductFactory(String filePath) {
         CsvReaderUtil reader = new CsvReaderUtil();
-        products = reader.readProducts("./src/main/resources/products.csv");
+        products = reader.readProducts(filePath);
     }
 
     public Product getProduct(int id) {

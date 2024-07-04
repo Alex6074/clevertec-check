@@ -17,9 +17,9 @@ public class Check {
     private ProductFactory productFactory;
     private DiscountCardFactory discountCardFactory;
 
-    public Check(String[] args) {
+    public Check(String[] args, String pathToFile) {
         balanceDebitCard = Double.MIN_VALUE;
-        productFactory = new ProductFactory();
+        productFactory = new ProductFactory(pathToFile);
         discountCardFactory = new DiscountCardFactory();
 
         for (String arg : args) {
@@ -30,6 +30,10 @@ public class Check {
                         : discountCardFactory.getDiscountCard(cardNumber);
             } else if (arg.startsWith("balanceDebitCard=")) {
                 balanceDebitCard = Double.parseDouble(arg.split("=")[1]);
+            } else if (arg.startsWith("pathToFile=")) {
+                continue;
+            } else if (arg.startsWith("saveToFile=")) {
+                continue;
             } else {
                 String[] parts = arg.split("-");
                 int productId = Integer.parseInt(parts[0]);

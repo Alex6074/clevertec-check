@@ -6,7 +6,8 @@ public class NotEnoughMoneyValidation implements CheckValidation{
     @Override
     public Optional<ValidationError> validate(Check check) {
         return check.getBalanceDebitCard() < check.getTotalAmount() - check.getTotalDiscount()
-                ? Optional.of(new ValidationError("400", "NOT ENOUGH MONEY"))
+                ? Optional.of(new ValidationError("NOT ENOUGH MONEY",
+                "Lack of funds (balance less than the amount on the check)"))
                 : Optional.empty();
     }
 }

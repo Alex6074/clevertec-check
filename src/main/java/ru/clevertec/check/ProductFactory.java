@@ -8,7 +8,7 @@ public class ProductFactory {
 
     public ProductFactory() {
         CsvReaderUtil reader = new CsvReaderUtil();
-        products = reader.readProducts("src/main/resources/products.csv");
+        products = reader.readProducts("./src/main/resources/products.csv");
     }
 
     public Product getProduct(int id) {

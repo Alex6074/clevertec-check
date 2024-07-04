@@ -7,7 +7,7 @@ public class DiscountCardFactory {
 
     public DiscountCardFactory() {
         CsvReaderUtil reader = new CsvReaderUtil();
-        discountCards = reader.readDiscountCards("src/main/resources/discountCards.csv");
+        discountCards = reader.readDiscountCards("./src/main/resources/discountCards.csv");
     }
 
     public DiscountCard getDiscountCard(int id) {

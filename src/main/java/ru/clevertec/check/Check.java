@@ -24,8 +24,10 @@ public class Check {
 
         for (String arg : args) {
             if (arg.startsWith("discountCard=")) {
-                int cardId = Integer.parseInt(arg.split("=")[1]);
-                discountCard = discountCardFactory.getDiscountCard(cardId);
+                int cardNumber = Integer.parseInt(arg.split("=")[1]);
+                discountCard = discountCardFactory.getDiscountCard(cardNumber) == null
+                        ? new DiscountCard(5, cardNumber, 2)
+                        : discountCardFactory.getDiscountCard(cardNumber);
             } else if (arg.startsWith("balanceDebitCard=")) {
                 balanceDebitCard = Double.parseDouble(arg.split("=")[1]);
             } else {
@@ -122,12 +124,17 @@ public class Check {
 
         if (discountCard != null) {
             System.out.print("\nDISCOUNT CARD;DISCOUNT PERCENTAGE\n");
-            System.out.print(discountCard.getNumber() + ";" + discountCard.getDiscountAmount() + "%" + "\n\n");
+            System.out.print(discountCard.getNumber() + ";" + discountCard.getDiscountAmount() + "%" + "\n");
         }
 
 
-        System.out.print("TOTAL PRICE;TOTAL DISCOUNT;TOTAL WITH DISCOUNT\n");
-        System.out.print(df.format(totalAmount) + "$;" + df.format(totalDiscount) + "$;" + df.format(totalAmount - totalDiscount) + "$\n");
+        System.out.print("\nTOTAL PRICE;TOTAL DISCOUNT;TOTAL WITH DISCOUNT\n");
+        System.out.print(df.format(totalAmount) + "$;"
+                + df.format(totalDiscount) + "$;"
+                + df.format(totalAmount - totalDiscount) + "$\n");
+
+        System.out.print("\nBALANCE ON THE CARD\n");
+        System.out.print(df.format(balanceDebitCard - totalAmount + totalDiscount) + "$");
     }
 
     public void saveCheckToFile(String filePath) {
@@ -152,11 +159,11 @@ public class Check {
 
             if (discountCard != null) {
                 writer.write("\nDISCOUNT CARD;DISCOUNT PERCENTAGE\n");
-                writer.write(discountCard.getNumber() + ";" + discountCard.getDiscountAmount() + "%" + "\n\n");
+                writer.write(discountCard.getNumber() + ";" + discountCard.getDiscountAmount() + "%" + "\n");
             }
 
 
-            writer.write("TOTAL PRICE;TOTAL DISCOUNT;TOTAL WITH DISCOUNT\n");
+            writer.write("\nTOTAL PRICE;TOTAL DISCOUNT;TOTAL WITH DISCOUNT\n");
             writer.write(df.format(totalAmount) + "$;" + df.format(totalDiscount) + "$;" + df.format(totalAmount - totalDiscount) + "$\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,7 +176,7 @@ public class Check {
         } else if (discountCard != null) {
             return (double) discountCard.getDiscountAmount() / 100;
         } else {
-            return 1;
+            return 0;
         }
     }
 }

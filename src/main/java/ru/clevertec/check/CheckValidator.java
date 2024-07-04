@@ -27,10 +27,10 @@ public class CheckValidator {
     public void printErrors(String filePath, List<ValidationError> errorList) {
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write("ERROR\n");
-            System.out.println("ERROR\n");
+            System.out.println("ERROR");
             for (ValidationError error : errorList) {
                 writer.write(error.getDescription() + "\n");
-                System.out.println("CODE: " + error.getErrorCode() + ", DESCRIPTION: " + error.getDescription() + "\n");
+                System.out.println("CODE: " + error.getErrorCode() + ", DESCRIPTION: " + error.getDescription());
             }
         } catch (IOException e) {
             e.printStackTrace();

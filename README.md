@@ -14,11 +14,11 @@
 ```sh
 java -cp src ./src/main/java/ru/clevertec/check/CheckRunner.java id-quantity discountCard=xxxx balanceDebitCard=xxxx
 ```
-## Где:
+Где:
 - id - идентификатор товара (см. products.csv)
 - quantity - количество товара
 - discountCard=xxxx - название и номер дисконтной карты (см. discountCards.csv)
 - balanceDebitCard=xxxx - баланс на дебетовой карте
 
-## Например
+Например
 java -cp src ./src/main/java/ru/clevertec/check/CheckRunner.java 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100

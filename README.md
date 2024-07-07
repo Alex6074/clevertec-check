@@ -9,12 +9,11 @@
 1. Клонируйте репозиторий.
 2. Убедитесь, что у вас установлен Java 21.
 3. Перейдите в корневую директорию проекта.
-4. Запустите последовательно команды для создания папки, компиляции Java файлов и запуска программы:
+4. Запустите последовательно команды для сборки и запуска программы:
 
 ```sh
-mkdir build\classes
-javac -d build\classes -cp src src\main\java\ru\clevertec\check\*.java
-java -cp build\classes ru.clevertec.check.CheckRunner id-quantity discountCard=xxxx balanceDebitCard=xxxx pathToFile=xxxx saveToFile=xxxx
+gradlew build
+java -jar build/libs/clevertec-check-1.0.jar id-quantity discountCard=xxxx balanceDebitCard=xxxx saveToFile=xxxx datasource.url=ххxх datasource.username=ххxх datasource.password=хxхх
 ```
 
 Где:
@@ -22,10 +21,12 @@ java -cp build\classes ru.clevertec.check.CheckRunner id-quantity discountCard=x
 - quantity - количество товара
 - discountCard=xxxx - название и номер дисконтной карты (см. discountCards.csv)
 - balanceDebitCard=xxxx - баланс на дебетовой карте
-- pathToFile=xxxx - относительный(от корневой директории проекта) путь + название файла с расширением содержащего список продуктов
 - saveToFile=xxxx - относительный(от корневой директории проекта) путь + название файла с расширением для сохранения результата
+- datasource.url=xxxx - url адресс базы данных
+- datasource.username=хххx - имя пользователя для подключения к базе данных
+- datasource.password=хххx - пароль для подключения к базе данных
 
 Например
 ```sh
-java -cp build\classes ru.clevertec.check.CheckRunner 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100 pathToFile=src/main/resources/products.csv saveToFile=src/main/resources/result.csv
+java -jar build/libs/clevertec-check-1.0.jar 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100 saveToFile=src/main/resources/result.csv datasource.url=jdbc:postgresql://localhost:5432/clevertec_check datasource.username=for_java_connection datasource.password=password
 ```

@@ -1,6 +1,5 @@
 package ru.clevertec.check;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CheckRunner {
@@ -8,28 +7,32 @@ public class CheckRunner {
     public static void main(String[] args) {
         CheckValidator validator = new CheckValidator();
 
-        String pathToFile = null;
         String saveToFile = null;
+        String url = null;
+        String username = null;
+        String password = null;
 
         for (String arg : args) {
-            if (arg.startsWith("pathToFile=")) {
-                pathToFile = arg.split("=")[1];
-            } else if (arg.startsWith("saveToFile=")) {
+            if (arg.startsWith("saveToFile=")) {
                 saveToFile = arg.split("=")[1];
+            } else if (arg.startsWith("datasource.url=")) {
+                url = arg.split("=")[1];
+            } else if (arg.startsWith("datasource.username=")) {
+                username = arg.split("=")[1];
+            } else if (arg.startsWith("datasource.password=")) {
+                password = arg.split("=")[1];
             }
         }
 
         if (saveToFile == null) {
-            validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST",
-                    "pathToFile and/or saveToFile arguments were not passed")));
+            validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
-        } else if (pathToFile == null) {
-            validator.printErrors(saveToFile, List.of(new ValidationError("BAD REQUEST",
-                    "pathToFile and/or saveToFile arguments were not passed")));
+        } else if (url == null || username == null || password == null) {
+            validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
         }
 
-        Check check = new Check(args, pathToFile);
+        Check check = new Check(args, url, username, password);
 
         List<ValidationError> errors = validator.validate(check);
         if (!errors.isEmpty()) {

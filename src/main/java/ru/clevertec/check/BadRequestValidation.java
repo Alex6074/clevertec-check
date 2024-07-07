@@ -8,14 +8,14 @@ public class BadRequestValidation implements CheckValidation {
     public Optional<ValidationError> validate(Check check) {
         if (check.getProducts().isEmpty() || check.getProducts().containsKey(null) || check.getBalanceDebitCard() == Double.MIN_VALUE) {
             return Optional.of(new ValidationError("BAD REQUEST",
-                    "Incorrect input data (arguments filled in incorrectly, quantity errors, missing products)"));
+                    "Arguments filled in incorrectly (missing products)"));
         }
 
-        Map<Integer, Product> stock = check.getProductFactory().getProducts();
+        JDBCRepository repository = check.getRepository();
         for (Map.Entry<Product, Integer> entry : check.getProducts().entrySet()) {
-            if (entry.getValue() > stock.get(entry.getKey().getId()).getQuantity()) {
+            if (entry.getValue() > repository.findProductById(entry.getKey().getId()).getQuantity()) {
                 return Optional.of(new ValidationError("BAD REQUEST",
-                        "Incorrect input data (arguments filled in incorrectly, quantity errors, missing products)"));
+                        "Arguments filled in incorrectly (quantity errors)"));
             }
         }
 

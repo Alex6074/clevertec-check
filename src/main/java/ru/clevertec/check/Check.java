@@ -1,5 +1,8 @@
 package ru.clevertec.check;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -8,37 +11,43 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@Setter
 public class Check {
     private Map<Product, Integer> products = new HashMap<>();
     private DiscountCard discountCard;
     private double totalAmount;
     private double totalDiscount;
     private double balanceDebitCard;
-    private ProductFactory productFactory;
-    private DiscountCardFactory discountCardFactory;
+    private JDBCRepository repository;
 
-    public Check(String[] args, String pathToFile) {
+    public Check(String[] args, String url, String username, String password) {
         balanceDebitCard = Double.MIN_VALUE;
-        productFactory = new ProductFactory(pathToFile);
-        discountCardFactory = new DiscountCardFactory();
+        MyDataSource.initialize("org.postgresql.Driver", url, username, password);
+        repository = new JDBCRepository();
 
         for (String arg : args) {
             if (arg.startsWith("discountCard=")) {
                 int cardNumber = Integer.parseInt(arg.split("=")[1]);
-                discountCard = discountCardFactory.getDiscountCard(cardNumber) == null
-                        ? new DiscountCard(5, cardNumber, 2)
-                        : discountCardFactory.getDiscountCard(cardNumber);
+                discountCard = repository.findDiscountCardByNumber(cardNumber);
+                discountCard = discountCard.getId() == 0
+                        ? new DiscountCard(5L, cardNumber, (short) 2)
+                        : discountCard;
             } else if (arg.startsWith("balanceDebitCard=")) {
                 balanceDebitCard = Double.parseDouble(arg.split("=")[1]);
-            } else if (arg.startsWith("pathToFile=")) {
-                continue;
             } else if (arg.startsWith("saveToFile=")) {
+                continue;
+            } else if (arg.startsWith("datasource.url=")) {
+                continue;
+            } else if (arg.startsWith("datasource.username=")) {
+                continue;
+            } else if (arg.startsWith("datasource.password=")) {
                 continue;
             } else {
                 String[] parts = arg.split("-");
-                int productId = Integer.parseInt(parts[0]);
+                long productId = Long.parseLong(parts[0]);
                 int quantity = Integer.parseInt(parts[1]);
-                Product product = productFactory.getProduct(productId);
+                Product product = repository.findProductById(productId);
                 products.put(product, products.getOrDefault(product, 0) + quantity);
             }
         }
@@ -47,60 +56,12 @@ public class Check {
             calculateTotal();
     }
 
-    public Map<Product, Integer> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Map<Product, Integer> products) {
-        this.products = products;
-    }
-
-    public DiscountCard getDiscountCard() {
-        return discountCard;
-    }
-
-    public void setDiscountCard(DiscountCard discountCard) {
-        this.discountCard = discountCard;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public double getTotalDiscount() {
-        return totalDiscount;
-    }
-
-    public void setTotalDiscount(double discount) {
-        this.totalDiscount = discount;
-    }
-
-    public double getBalanceDebitCard() {
-        return balanceDebitCard;
-    }
-
-    public void setBalanceDebitCard(double balanceDebitCard) {
-        this.balanceDebitCard = balanceDebitCard;
-    }
-
-    public ProductFactory getProductFactory() {
-        return productFactory;
-    }
-
-    public DiscountCardFactory getDiscountCardFactory() {
-        return discountCardFactory;
-    }
-
     private void calculateTotal() {
         totalDiscount = 0;
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             Product product = entry.getKey();
             int quantity = entry.getValue();
-            double productTotal = product.getPrice() * quantity;
+            double productTotal = product.getPrice().doubleValue() * quantity;
             double discount = calculateDiscount(product, quantity);
 
             totalDiscount += productTotal * discount;
@@ -119,11 +80,11 @@ public class Check {
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             Product product = entry.getKey();
             int quantity = entry.getValue();
-            double price = product.getPrice();
+            double price = product.getPrice().doubleValue();
             double discount = price * quantity * calculateDiscount(product, quantity);
             double total = price * quantity;
 
-            System.out.print(quantity + ";" + product.getName() + ";" + df.format(price) + "$;" + df.format(discount) + "$;" + df.format(total) + "$\n");
+            System.out.print(quantity + ";" + product.getDescription() + ";" + df.format(price) + "$;" + df.format(discount) + "$;" + df.format(total) + "$\n");
         }
 
         if (discountCard != null) {
@@ -154,11 +115,11 @@ public class Check {
             for (Map.Entry<Product, Integer> entry : products.entrySet()) {
                 Product product = entry.getKey();
                 int quantity = entry.getValue();
-                double price = product.getPrice();
+                double price = product.getPrice().doubleValue();
                 double discount = price * quantity * calculateDiscount(product, quantity);
                 double total = price * quantity;
 
-                writer.write(quantity + ";" + product.getName() + ";" + df.format(price) + "$;" + df.format(discount) + "$;" + df.format(total) + "$\n");
+                writer.write(quantity + ";" + product.getDescription() + ";" + df.format(price) + "$;" + df.format(discount) + "$;" + df.format(total) + "$\n");
             }
 
             if (discountCard != null) {

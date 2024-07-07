@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.clevertec.check'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+jar {
+    archiveBaseName = 'clevertec-check'
+    version = '1.0'
+    manifest {
+        attributes(
+                'Main-Class': 'ru.clevertec.check.CheckRunner'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.postgresql:postgresql:42.7.3'
+
+    compileOnly('org.projectlombok:lombok:1.18.30')
+    annotationProcessor('org.projectlombok:lombok:1.18.30')
+
+    testCompileOnly('org.projectlombok:lombok:1.18.30')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.30')
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

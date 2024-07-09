@@ -28,7 +28,7 @@ public class CheckRunner {
             validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
         } else if (url == null || username == null || password == null) {
-            validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
+            validator.printErrors(saveTofile, List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
         }
 

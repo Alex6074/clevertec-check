@@ -1,5 +1,9 @@
 package ru.clevertec.check;
 
+import ru.clevertec.check.core.Check;
+import ru.clevertec.check.validation.CheckValidator;
+import ru.clevertec.check.validation.ValidationError;
+
 import java.util.List;
 
 public class CheckRunner {
@@ -28,7 +32,7 @@ public class CheckRunner {
             validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
         } else if (url == null || username == null || password == null) {
-            validator.printErrors("result.csv", List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
+            validator.printErrors(saveToFile, List.of(new ValidationError("BAD REQUEST", "Invalid arguments")));
             return;
         }
 

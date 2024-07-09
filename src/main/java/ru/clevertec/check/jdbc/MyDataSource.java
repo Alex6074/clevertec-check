@@ -1,4 +1,4 @@
-package ru.clevertec.check;
+package ru.clevertec.check.jdbc;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;

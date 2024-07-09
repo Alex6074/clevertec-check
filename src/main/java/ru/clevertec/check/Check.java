@@ -1,6 +1,7 @@
 package ru.clevertec.check;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Check {
     private Map<Product, Integer> products = new HashMap<>();
     private DiscountCard discountCard;
@@ -56,8 +58,7 @@ public class Check {
             calculateTotal();
     }
 
-    private void calculateTotal() {
-        totalDiscount = 0;
+    void calculateTotal() {
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             Product product = entry.getKey();
             int quantity = entry.getValue();
@@ -135,7 +136,7 @@ public class Check {
         }
     }
 
-    private double calculateDiscount(Product product, int quantity) {
+    double calculateDiscount(Product product, int quantity) {
         if (product.isWholesale() && quantity >= 5) {
             return 0.1;
         } else if (discountCard != null) {

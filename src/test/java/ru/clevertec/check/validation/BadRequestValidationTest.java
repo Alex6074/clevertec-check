@@ -1,6 +1,9 @@
-package ru.clevertec.check;
+package ru.clevertec.check.validation;
 
 import org.junit.jupiter.api.Test;
+import ru.clevertec.check.core.Check;
+import ru.clevertec.check.core.Product;
+import ru.clevertec.check.jdbc.JDBCRepository;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -30,3 +30,6 @@ java -jar build/libs/clevertec-check-1.0.jar id-quantity discountCard=xxxx balan
 ```sh
 java -jar build/libs/clevertec-check-1.0.jar 3-1 2-5 5-1 discountCard=1111 balanceDebitCard=100 saveToFile=src/main/resources/result.csv datasource.url=jdbc:postgresql://localhost:5432/clevertec_check datasource.username=for_java_connection datasource.password=password
 ```
+
+## Изменения
+- Улучшена структура проекта

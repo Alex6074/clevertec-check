@@ -1,8 +1,10 @@
-package ru.clevertec.check;
+package ru.clevertec.check.core;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.clevertec.check.jdbc.JDBCRepository;
+import ru.clevertec.check.jdbc.MyDataSource;
 
 import java.io.FileWriter;
 import java.io.IOException;

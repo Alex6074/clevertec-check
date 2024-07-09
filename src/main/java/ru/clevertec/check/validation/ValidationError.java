@@ -1,4 +1,4 @@
-package ru.clevertec.check;
+package ru.clevertec.check.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

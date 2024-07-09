@@ -1,4 +1,6 @@
-package ru.clevertec.check;
+package ru.clevertec.check.validation;
+
+import ru.clevertec.check.core.Check;
 
 import java.util.Optional;
 

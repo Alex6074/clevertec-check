@@ -1,9 +1,11 @@
-package ru.clevertec.check;
+package ru.clevertec.check.jdbc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.clevertec.check.core.DiscountCard;
+import ru.clevertec.check.core.Product;
 
 import java.sql.*;
 

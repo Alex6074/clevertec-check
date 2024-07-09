@@ -1,4 +1,4 @@
-package ru.clevertec.check;
+package ru.clevertec.check.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

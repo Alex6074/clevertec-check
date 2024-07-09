@@ -1,9 +1,11 @@
-package ru.clevertec.check;
+package ru.clevertec.check.jdbc;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import ru.clevertec.check.core.DiscountCard;
+import ru.clevertec.check.core.Product;
 
 import java.math.BigDecimal;
 import java.sql.*;
